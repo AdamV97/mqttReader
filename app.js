@@ -5,6 +5,7 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
 var mqttReader = require('./modules/mqttReader');
+var mqttMotionReader = require('./modules/mqttMotionReader');
 
 var app = express();
 
