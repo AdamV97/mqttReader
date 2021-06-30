@@ -117,7 +117,9 @@ client.on('message', async (topic, message) => {
   let motionSensorData = JSON.parse(message.toString());
   motionSensorData.topic = topic;
 
-  triggerAlarms();
+  if(motionSensorData.occupancy){
+    triggerAlarms();
+  }
 
   if(!motionSensorData.occupancy){
     client.publish('zigbee2mqtt/0x842e14fffe3597db/set', '{"state": "OFF"}');
