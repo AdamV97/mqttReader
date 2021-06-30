@@ -51,7 +51,7 @@ function checkTime(){
   let currentTime = Date.now();
   currentTime = new Date(currentTime).getHours();
 
-  if(currentTime > 7 && currentTime < 17){
+  if(currentTime > 7 && currentTime < 19){
     return false;
   }
 
