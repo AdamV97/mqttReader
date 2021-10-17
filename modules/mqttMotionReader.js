@@ -139,9 +139,11 @@ client.on('message', async (topic, message) => {
     triggerAlarms();
   }
 
+  const isTime = await checkTime();
+
   if(!motionSensorData.occupancy){
     client.publish('zigbee2mqtt/0x842e14fffe3597db/set', '{"state": "OFF"}');
-  }else if(motionSensorData.occupancy && checkTime()){
+  }else if(motionSensorData.occupancy && isTime){
     client.publish('zigbee2mqtt/0x842e14fffe3597db/set', '{"state": "ON"}');
   }
 
