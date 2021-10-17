@@ -49,28 +49,27 @@ async function writeData(data){
 
 function getTime(){
   return new Promise(resolve => {
-    let sql = "SELECT * FROM device WHERE id IN (1,2)"
+    let sql = "SELECT * FROM custom_settings WHERE id IN (1,2)"
 
     con.query(sql, function (err, result, fields) {
       if (err) throw err;
 
       data = {
-        from: result[0].value,
-        to: result[1].value
+        from: parseInt(result[0].value),
+        to: parseInt(result[1].value)
       }
 
       resolve(data);
-
     });
   });
 }
 
 async function checkTime(){
-  let time = await getTime();
+  const time = await getTime();
   let currentTime = Date.now();
   currentTime = new Date(currentTime).getHours();
 
-  if(currentTime > time.data.from && currentTime < time.data.to){
+  if(currentTime > time.from && currentTime < time.to){
     return false;
   }
 
