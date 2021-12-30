@@ -14,7 +14,8 @@ const con = mysql.createConnection({
   host: jsonData.database.host,
   user: jsonData.database.user,
   password: jsonData.database.password,
-  database: jsonData.database.name
+  database: jsonData.database.name,
+  insecureAuth: true
 });
 
 let lastEntry;
