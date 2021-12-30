@@ -49,7 +49,17 @@ client.on('connect', () => {
   client.subscribe('zigbee2mqtt/0x00158d00047b3223')
 })
 
+function checkConnection(){
+  if(con.state !== 'authenticated'){
+    con.connect(function(err) {
+      if (err) throw err;
+      console.log("Reconnected to Database!");
+    });
+  }
+}
+
 client.on('message', (topic, message) => {
+  checkConnection();
   let ts = Date.now();
   ts = Math.floor(ts/1000);
 

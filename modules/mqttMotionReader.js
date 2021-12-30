@@ -131,7 +131,17 @@ async function triggerAlarms(){
   }
 }
 
+function checkConnection(){
+  if(con.state !== 'authenticated'){
+    con.connect(function(err) {
+      if (err) throw err;
+      console.log("Reconnected to Database!");
+    });
+  }
+}
+
 client.on('message', async (topic, message) => {
+  checkConnection();
   let motionSensorData = JSON.parse(message.toString());
   motionSensorData.topic = topic;
 
