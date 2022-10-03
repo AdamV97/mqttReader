@@ -52,7 +52,7 @@ client.on('connect', () => {
 })
 
 function checkConnection(){
-  if(con.state !== 'authenticated'){
+  if(con.state != 'authenticated' && con.state != 'connected' ){
     con.connect(function(err) {
       if (err) throw err;
       console.log("Reconnected to Database!");
@@ -188,15 +188,6 @@ async function triggerAlarms(){
   const isActive = await getActiveAlarms();
   if(isActive){
     sendNotification();
-  }
-}
-
-function checkConnection(){
-  if(con.state !== 'authenticated'){
-    con.connect(function(err) {
-      if (err) throw err;
-      console.log("Reconnected to Database!");
-    });
   }
 }
 
