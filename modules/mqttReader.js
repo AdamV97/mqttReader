@@ -192,7 +192,7 @@ async function triggerAlarms(){
 }
 
 client.on('message', async (topic, message) => {
-  if(topic = 'zigbee2mqtt/0xbc33acfffe363aef'){
+  if(topic == 'zigbee2mqtt/0xbc33acfffe363aef'){
     checkConnection();
     let motionSensorData = JSON.parse(message.toString());
     motionSensorData.topic = topic;
