@@ -34,7 +34,7 @@ function getDeviceDatabaseId(deviceID){
   });
 }
 
-async function writeData(data){
+async function writeDataHTPSensor(data){
   let deviceID = data.topic.replace('zigbee2mqtt/', '');
 
   deviceID = await getDeviceDatabaseId(deviceID);
@@ -71,7 +71,7 @@ client.on('message', (topic, message) => {
   
     //if statement so when sensor sends multiple data in 1 second it dosen't enter all the data
     if(lastEntry !== ts){
-      writeData(sensorData);
+      writeDataHTPSensor(sensorData);
     }
   
     lastEntry = ts;
@@ -80,19 +80,6 @@ client.on('message', (topic, message) => {
 
 // #################################################################
 // Will remove node.js from this project and connect to MQTT using Laravel... (one day :D)
-
-function getDeviceDatabaseId(deviceID){
-  return new Promise(resolve => {
-    let sql = "SELECT id FROM device WHERE device_id = ?"
-
-    con.query(sql, [deviceID], function (err, result, fields) {
-      if (err) throw err;
-
-      resolve(result[0].id);
-
-    });
-  });
-}
 
 async function writeData(data){
   let deviceID = data.topic.replace('zigbee2mqtt/', '');
