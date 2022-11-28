@@ -28,6 +28,7 @@ function checkConnection(){
       con.connect(function(err) {
         if (err){
           console.log("Error while reconnecting to Database!");
+          console.error(err.message);
           throw err;
         };
         console.log("Reconnected to Database!");
@@ -44,7 +45,11 @@ function getDeviceDatabaseId(deviceID){
     let sql = "SELECT id FROM device WHERE device_id = ?"
 
     con.query(sql, [deviceID], function (err, result, fields) {
-      if (err) throw err;
+      if (err){
+        console.log('Error selecting IDs from Devices!');
+        console.error(err.message);
+        throw err;
+      }
 
       resolve(result[0].id);
 
@@ -111,7 +116,11 @@ function getTime(){
     let sql = "SELECT * FROM custom_settings WHERE id IN (1,2)"
 
     con.query(sql, function (err, result, fields) {
-      if (err) throw err;
+      if (err){
+        console.log('Error selecting custom settings!')
+        console.error(err.message);
+        throw err;
+      };
 
       data = {
         from: parseInt(result[0].value),
