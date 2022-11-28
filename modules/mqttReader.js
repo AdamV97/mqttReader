@@ -19,6 +19,24 @@ const con = mysql.createConnection({
   insecureAuth: true
 });
 
+con.connect();
+
+function checkConnection(){
+  return new Promise(resolve => {
+    console.log('database state is: '  + con.state);
+    if(con.state != 'authenticated' && con.state != 'connected' ){
+      con.connect(function(err) {
+        if (err){
+          console.log("Error while reconnecting to Database!");
+          throw err;
+        };
+        console.log("Reconnected to Database!");
+      });
+    }
+    resolve(true);
+  });
+}
+
 let lastEntry;
 
 function getDeviceDatabaseId(deviceID){
@@ -35,6 +53,7 @@ function getDeviceDatabaseId(deviceID){
 }
 
 async function writeDataHTPSensor(data){
+  await checkConnection();
   let deviceID = data.topic.replace('zigbee2mqtt/', '');
 
   deviceID = await getDeviceDatabaseId(deviceID);
@@ -51,18 +70,9 @@ client.on('connect', () => {
   client.subscribe('zigbee2mqtt/+')
 })
 
-function checkConnection(){
-  if(con.state != 'authenticated' && con.state != 'connected' ){
-    con.connect(function(err) {
-      if (err) throw err;
-      console.log("Reconnected to Database!");
-    });
-  }
-}
 
 client.on('message', (topic, message) => {
   if(topic == 'zigbee2mqtt/0x00158d00047b3223'){
-    checkConnection();
     let ts = Date.now();
     ts = Math.floor(ts/1000);
   
@@ -82,6 +92,8 @@ client.on('message', (topic, message) => {
 // Will remove node.js from this project and connect to MQTT using Laravel... (one day :D)
 
 async function writeData(data){
+  await checkConnection();
+
   let deviceID = data.topic.replace('zigbee2mqtt/', '');
 
   deviceID = await getDeviceDatabaseId(deviceID);
@@ -172,6 +184,7 @@ function getActiveAlarms(){
 }
 
 async function triggerAlarms(){
+  await checkConnection();
   const isActive = await getActiveAlarms();
   if(isActive){
     sendNotification();
@@ -180,7 +193,7 @@ async function triggerAlarms(){
 
 client.on('message', async (topic, message) => {
   if(topic == 'zigbee2mqtt/0xbc33acfffe363aef'){
-    checkConnection();
+
     let motionSensorData = JSON.parse(message.toString());
     motionSensorData.topic = topic;
   
