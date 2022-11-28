@@ -47,7 +47,7 @@ function getDeviceDatabaseId(deviceID){
     con.query(sql, [deviceID], function (err, result, fields) {
       if (err){
         console.log('Error selecting IDs from Devices!');
-        console.error(err.message);
+        console.log(err.message);
         throw err;
       }
 
@@ -118,7 +118,7 @@ function getTime(){
     con.query(sql, function (err, result, fields) {
       if (err){
         console.log('Error selecting custom settings!')
-        console.error(err.message);
+        console.log(err.message);
         throw err;
       };
 
